@@ -8,16 +8,16 @@ from keras.utils import np_utils
 
 csv = pd.read_csv('planos.csv', sep=',')
 csv = csv.drop(columns=['nome'])
-dados = csv.values
 
 #Ajusta
 le = LabelEncoder()
-dados[:,1] = le.fit_transform(dados[:,1])
+csv['estado civil'] = le.fit_transform(csv['estado civil']) #Estado Civil (0-casado|1-solteiro|2-viuvo)
+csv['genero'] = le.fit_transform(csv['genero']) #Gênero (0-feminino|1-masculino)
+csv['risco'] = le.fit_transform(csv['risco']) #Risco (0-alto|1-baixo|2-medio)
+dados = csv.values
 
 #Separa
-atributos = dados[:,0:3] #Estado Civil (0-casado|1-solteiro|2-viuvo)
-dados[:,2] = le.fit_transform(dados[:,2]) #Gênero (0-feminino|1-masculino)
-dados[:,3] = le.fit_transform(dados[:,3]) #Risco (0-alto|1-baixo|2-medio)
+atributos = dados[:,0:3] 
 classificadores = dados[:,3]
 classificadores = np_utils.to_categorical(classificadores)
 
